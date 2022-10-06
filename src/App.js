@@ -6,7 +6,7 @@ import About from "./component/about";
 import Contact from "./component/contact";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MainPage from "./component/mainPage";
-import Electronics from "./component/electronics";
+import Category from "./component/categories";
 import Article from "./component/specificArticle";
 import { useState,useEffect } from "react";
 import CartDetail from "./component/cartDetail";
@@ -32,10 +32,10 @@ function App() {
             <Route path="/" element={<Home products={products} />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/electronics" element={<Electronics products={products}/>} />
-            <Route path="/jewelery" element={<Electronics products={products}/>} />
-            <Route path="/men's clothing"  element={<Electronics products={products}/>} />
-            <Route path="/women's clothing"  element={<Electronics products={products}/>} />
+            <Route path="/electronics" element={<Category products={products}/>} />
+            <Route path="/jewelery" element={<Category products={products}/>} />
+            <Route path="/men's clothing"  element={<Category products={products}/>} />
+            <Route path="/women's clothing"  element={<Category products={products}/>} />
             <Route path="/cartdetail/:id" element={<CartDetail />} />
             <Route path="/specific/:id" element={<Article  products={products}/>} />
           </Routes>

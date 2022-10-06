@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
-const Electronics = ({ products }) => {
+const Category = ({ products }) => {
   const [data, setData] = useState([]);
   const getData = useSelector((state) => state.carts.select);
 
@@ -37,4 +37,4 @@ const Electronics = ({ products }) => {
   );
 };
 
-export default Electronics;
+export default Category;
