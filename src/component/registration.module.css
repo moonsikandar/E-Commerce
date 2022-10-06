@@ -1,0 +1,11 @@
+form .reg{
+    background-color: #419d6f;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-width: 50%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 15px 0 15px 0;
+}

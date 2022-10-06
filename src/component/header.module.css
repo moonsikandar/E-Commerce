@@ -1,0 +1,36 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 40px;
+    
+}
+.search{
+    max-width: 600px;
+    width: 100%;
+}
+.input{
+    width: 80%;
+    outline: 2px solid green;
+    
+    padding: 3px ;
+}
+.logo{
+    max-width: 100px;
+}
+.logo img{
+    width: 100%;
+}
+ul {
+    display: flex;
+    gap : 40px
+    
+}
+ul li {
+    list-style: none;
+}
+ul li a{
+    text-decoration: none;
+    color: black;    
+}
