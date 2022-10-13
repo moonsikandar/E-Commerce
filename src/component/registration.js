@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase/firebaseAuth";
+import { auth } from "../firebase/firebaseAuth";
 import SignIn from "./signIn";
 import REGcss from "./registration.module.css";
 const Registration = () => {

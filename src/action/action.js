@@ -5,11 +5,18 @@ import {
   SELECTION_FILTER,
   DELETE_ITEM,
   AUTH_USER,
+  DECREASE_QUANTITY,
 } from "./action_type";
 
 export const ADD = (item) => {
   return {
     type: ADD_To_CART,
+    payload: item,
+  };
+};
+export const Decrease = (item) => {
+  return {
+    type: DECREASE_QUANTITY,
     payload: item,
   };
 };

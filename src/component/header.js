@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./navbar";
 import style from "./header.module.css";
 import Badge from "@mui/material/Badge";
@@ -6,15 +6,17 @@ import { Menu } from "@mui/material";
 import logo from "../images/starbucks.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Table } from "react-bootstrap";
-import { searchItem } from "./action/action";
-import { Link, useNavigate } from "react-router-dom";
-import { DLT } from "./action/action";
-import { auth } from "./firebase/firebaseAuth";
-import { signOut} from "firebase/auth";
+import { searchItem } from "../action/action";
+import { Link } from "react-router-dom";
+import { DLT, Decrease, ADD } from "../action/action";
+import { auth } from "../firebase/firebaseAuth";
+import { signOut } from "firebase/auth";
 const Header = () => {
+  const [price, setPrice] = useState(0);
+
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const getData = useSelector((state) => state.carts.items);
+
+  const getData = useSelector((state) => state.cartProduct.items);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -28,18 +30,36 @@ const Header = () => {
   const del = (id) => {
     dispatch(DLT(id));
   };
+
+  const addQuantity = (e) => {
+    dispatch(ADD(e));
+  };
+  const removeQuantity = (e) => {
+    dispatch(Decrease(e));
+  };
   const searchHandler = (e) => {
     dispatch(searchItem(e.target.value));
   };
   const signout = async () => {
-    await signOut(auth).then(()=>{
-      window.location.reload()
-    })
-      
+    await signOut(auth).then(() => {
+      window.location.reload();
+    });
   };
+
+  const priceByQuantity = () => {
+    let totalItemPrice = 0;
+    getData.map((e) => {
+      totalItemPrice += e.quantity * e.price;
+    });
+    setPrice(totalItemPrice);
+  };
+  useEffect(() => {
+    priceByQuantity();
+  }, [priceByQuantity]);
+
   return (
     <div className={style.header}>
-       <button onClick={signout}>LogOut</button>
+      <button onClick={signout}>LogOut</button>
       <div className={style.logo}>
         <img src={logo} alt="Logo" />
       </div>
@@ -94,7 +114,7 @@ const Header = () => {
                     <>
                       <tr>
                         <td>
-                          <Link to={`/cartDetail/${e.id}`}>
+                          <Link to={`/specific/${e.id}`} state={e}>
                             <img
                               src={e.image}
                               style={{ width: "5rem", height: "5rem" }}
@@ -104,18 +124,23 @@ const Header = () => {
                         </td>
                         <td>
                           <p>{e.title}</p>
-                          <p>${e.price}</p>
+                          <p>${e.quantity * e.price}</p>
+                          <p>
+                            <button onClick={() => removeQuantity(e)}>-</button>{" "}
+                            {e.quantity}{" "}
+                            <button onClick={() => addQuantity(e)}>+</button>
+                          </p>
                           <button onClick={() => del(e.id)}>
                             {" "}
                             <i className="fas fa-trash"></i>
                           </button>
                         </td>
                       </tr>
-                      <p>Total:$ 340</p>
                     </>
                   );
                 })}
               </tbody>
+              <p>Total:{price.toFixed(2)}</p>
             </Table>
           </div>
         ) : (

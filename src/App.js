@@ -1,47 +1,78 @@
 import "./App.css";
 import Header from "./component/header";
 import { Route, Routes } from "react-router-dom";
-import Home from "./component/home";
-import About from "./component/about";
-import Contact from "./component/contact";
+import Home from "./Pages/Home/home";
+import About from "./Pages/About/about";
+import Contact from "./Pages/Contact/contact";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MainPage from "./component/mainPage";
-import Category from "./component/categories";
 import Article from "./component/specificArticle";
-import { useState,useEffect } from "react";
-import CartDetail from "./component/cartDetail";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function App() {
-
   const [products, setProducts] = useState([]);
-  const user = useSelector((state) => state.carts.user);
-  
+  const [selectedData, setSelectedData] = useState([]);
+  const user = useSelector((state) => state.product.user);
+
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
-      .then((json) => setProducts(json));
+      .then((json) =>
+        setProducts(
+          json.map((it) => {
+            return { ...it, quantity: 1 };
+          })
+        )
+      );
   }, []);
-  
+
+  const choosenData = useSelector((state) => state.product.select);
+  const comparison = () => {
+    let comparingName = products.filter((e) => {
+      return e.category.includes(choosenData);
+    });
+    setSelectedData(comparingName);
+  };
+  useEffect(() => {
+    comparison();
+  }, [choosenData]);
+
   return (
-    
-     <>   
-       {user? <div className="container">
-          <Header products={products}/>
+    <>
+      {user ? (
+        <div className="container">
+          <Header products={products} />
           <Routes>
             <Route path="/" element={<Home products={products} />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/electronics" element={<Category products={products}/>} />
-            <Route path="/jewelery" element={<Category products={products}/>} />
-            <Route path="/men's clothing"  element={<Category products={products}/>} />
-            <Route path="/women's clothing"  element={<Category products={products}/>} />
-            <Route path="/cartdetail/:id" element={<CartDetail />} />
-            <Route path="/specific/:id" element={<Article  products={products}/>} />
+            <Route
+              path="/electronics"
+              element={<Home selectedProducts={selectedData} />}
+            />
+            <Route
+              path="/jewelery"
+              element={<Home selectedProducts={selectedData} />}
+            />
+            <Route
+              path="/men"
+              element={<Home selectedProducts={selectedData} />}
+            />
+            <Route
+              path="/women"
+              element={<Home selectedProducts={selectedData} />}
+            />
+            <Route
+              path="/specific/:id"
+              element={<Article products={products} />}
+            />
           </Routes>
-        </div>:<MainPage/>}
-
-     </>
+        </div>
+      ) : (
+        <MainPage />
+      )}
+    </>
   );
 }
 

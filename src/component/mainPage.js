@@ -7,7 +7,7 @@ import SignIn from './signIn';
 import Main from './mainpage.module.css'
 const MainPage = () => {
     const [register,setRegister]=useState(false)
-  const user = useSelector((state) => state.carts.user);
+  const user = useSelector((state) => state.product.user);
 
   return (
     <div className={Main.main}>
