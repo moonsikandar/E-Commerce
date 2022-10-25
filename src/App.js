@@ -9,11 +9,21 @@ import MainPage from "./component/mainPage";
 import Article from "./component/specificArticle";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { auth } from "./firebase/firebaseAuth";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [products, setProducts] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
+  const [loginUser,setLoginUser]=useState(null)
+
   const user = useSelector((state) => state.product.user);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setLoginUser(currentUser);
+    });
+  }, []);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -34,9 +44,15 @@ function App() {
     });
     setSelectedData(comparingName);
   };
+
   useEffect(() => {
     comparison();
   }, [choosenData]);
+
+  useEffect(()=>{
+    localStorage.setItem("user",JSON.stringify(loginUser))
+  },[loginUser])
+
 
   return (
     <>
@@ -45,7 +61,7 @@ function App() {
           <Header products={products} />
           <Routes>
             <Route path="/" element={<Home products={products} />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/about" element={<About  />} />
             <Route path="/contact" element={<Contact />} />
             <Route
               path="/electronics"

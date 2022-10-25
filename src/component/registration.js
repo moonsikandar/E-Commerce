@@ -7,6 +7,7 @@ const Registration = () => {
   const [registerEmail, setRegisterEmial] = useState("");
   const [registerPassword, setRegisterPssword] = useState("");
   const [loginUser, setLoginUSer] = useState("");
+  
   const register = async (e) => {
     try {
       const user = await createUserWithEmailAndPassword(
