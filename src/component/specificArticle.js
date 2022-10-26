@@ -1,12 +1,4 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { db } from "../firebase/firebaseAuth";
@@ -18,8 +10,7 @@ const Article = () => {
   const [toggle, setToggle] = useState(true);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
   const { state } = useLocation();
-  const curr_user = JSON.parse(localStorage.getItem("user"));
-  let user = curr_user.email.substring(0, 6);
+ 
   const gettingComments = async () => {
     const res = await getDoc(doc(db, "Comments", `${state.id}`));
     if (res.data()) {
@@ -39,24 +30,28 @@ const Article = () => {
       setItems((olddata) => {
         return [...olddata, inputText];
       });
-      await setDoc(doc(db, "Comments", `${state.id}`), { AllComments: [...items, inputText] });
-    }
-    setInputText("")
-  };
-  const deleteItem = (id) => {
-    console.log("deleted.");
-    setItems((olddata) => {
-      return olddata.filter((arrvalue, index) => {
-        return index !== id;
+      await setDoc(doc(db, "Comments", `${state.id}`), {
+        AllComments: [...items, inputText],
       });
+    }
+    setInputText("");
+  };
+  const deleteItem = async (id) => {
+    console.log("deleted.,", id);
+    const updatedData = items.filter(removingArticle);
+    function removingArticle(oldData, index) {
+      return index !== id;
+    }
+    await setDoc(doc(db, "Comments", `${state.id}`), {
+      AllComments: updatedData,
     });
+    setItems(updatedData);
   };
   const editItem = (text, index) => {
     console.log(index);
     setSelectedItemIndex(index);
     setToggle(false);
     setInputText(text);
-    
   };
   useEffect(() => {
     gettingComments();

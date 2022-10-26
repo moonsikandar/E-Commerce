@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { auth } from "./firebase/firebaseAuth";
 import { onAuthStateChanged } from "firebase/auth";
+import PlaceOrder from "./component/placeOrder";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -83,6 +84,7 @@ function App() {
               path="/specific/:id"
               element={<Article products={products} />}
             />
+            <Route path="/order" element={<PlaceOrder/>}/>
           </Routes>
         </div>
       ) : (

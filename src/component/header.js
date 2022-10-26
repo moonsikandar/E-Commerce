@@ -5,13 +5,14 @@ import Badge from "@mui/material/Badge";
 import { Menu } from "@mui/material";
 import logo from "../images/starbucks.png";
 import { useDispatch, useSelector } from "react-redux";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { searchItem } from "../action/action";
 import { Link } from "react-router-dom";
 import { DLT, Decrease, ADD } from "../action/action";
 import { auth } from "../firebase/firebaseAuth";
 import { signOut } from "firebase/auth";
 const Header = () => {
+
   const [price, setPrice] = useState(0);
 
   const dispatch = useDispatch();
@@ -113,7 +114,7 @@ const Header = () => {
                   return (
                     <>
                       <tr>
-                        <td>
+                        <td key={e.id}>
                           <Link to={`/specific/${e.id}`} state={e}>
                             <img
                               src={e.image}
@@ -130,9 +131,9 @@ const Header = () => {
                             {e.quantity}{" "}
                             <button onClick={() => addQuantity(e)}>+</button>
                           </p>
-                          <button onClick={() => del(e.id)}>
+                          <button  onClick={() => del(e.id)}>
                             {" "}
-                            <i className="fas fa-trash"></i>
+                            <i className="fas fa-trash" style={{color:"red"}}></i>
                           </button>
                         </td>
                       </tr>
@@ -140,7 +141,14 @@ const Header = () => {
                   );
                 })}
               </tbody>
-              <p>Total:{price.toFixed(2)}</p>
+              <tfoot>
+               
+                <p>Total:{price.toFixed(2)}</p>
+                
+              </tfoot>
+                <Link to="/order"> <Button >
+                place my Order
+              </Button></Link>
             </Table>
           </div>
         ) : (

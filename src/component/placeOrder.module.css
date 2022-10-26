@@ -1,0 +1,29 @@
+form{
+    padding: 20px;
+}
+li{
+    list-style: none;
+    text-align: center;
+}
+span{
+    display: block;
+    margin: 10px 0;
+}
+label{
+    font-size: 20px;
+}
+input{
+    padding: 5px;
+    width: 60%;
+}
+style.bttn{
+    margin: 10px 0;
+    background-color: green;
+    color: white;
+    outline: none;
+    border: 0;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 22px;
+}
+
